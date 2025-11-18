@@ -65,8 +65,32 @@ public class PlanCRUD implements ICRUD{
     }
 
     @Override
-    public int deletePlan(Object obj) {
-        return 0;
+    public void deletePlan() {
+        System.out.println("=> 삭제하고 싶은 내용 검색 : ");
+        String keyword = s.next();
+        s.nextLine();
+        ArrayList<Integer> idlist = this.listAll(keyword);
+        if (!idlist.isEmpty()) {
+            System.out.println("=> 삭제할 항목 번호 : ");
+            int id = s.nextInt();
+            s.nextLine();
+            while (id > idlist.size()) {
+                System.out.println("존재하지 않는 항목입니다.");
+                System.out.println("=> 삭제할 항목 번호 재입력 : ");
+                id = s.nextInt();
+                s.nextLine();
+            }
+            System.out.println("=> 정말 삭제하시겠습니까?(Y/n) ");
+            String ans = s.next();
+            if(ans.equalsIgnoreCase("Y")) {
+                plans.remove((int)idlist.get(id-1));
+                System.out.println("일정이 삭제되었습니다.");
+            } else {
+                System.out.println("취소되었습니다.");
+            }
+        }else {
+            System.out.println("검색 결과가 없습니다.");
+        }
     }
 
     @Override
