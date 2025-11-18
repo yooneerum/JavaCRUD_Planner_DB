@@ -34,6 +34,7 @@ public class PlanManager {
             else if (menu == 1) {
                 planCRUD.listAll();
             } else if (menu == 2) {
+                planCRUD.listLevelPlan();
             } else if (menu == 3) {
             } else if (menu == 4) {
             } else if (menu == 5) {

@@ -56,4 +56,24 @@ public class PlanCRUD implements ICRUD{
         }
         System.out.println("---------------------------");
     }
+
+    public void listLevelPlan() {
+        System.out.println("=> 중요도(1~3) 입력 : ");
+        int level = s.nextInt();
+        s.nextLine();
+
+        ArrayList<Plan> temp = new ArrayList<>();
+        for (int i = 0; i < plans.size(); i++) {
+            if (plans.get(i).getLevel() == level) {
+                temp.add(plans.get(i));
+            }
+        }
+        System.out.println("---------------------------");
+        for (int i = 0; i < temp.size(); i++) {
+            System.out.print((i + 1) + " ");
+            System.out.println(temp.get(i).toString());
+        }
+        System.out.println("---------------------------");
+    }
+
 }
