@@ -1,9 +1,36 @@
 package org.plannerDB;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class PlanCRUD implements ICRUD{
+    ArrayList<Plan> plans;
+    Scanner s;
+
+    PlanCRUD(Scanner s) {
+        plans = new ArrayList<>();
+        this.s = s;
+    }
+
     @Override
     public Object add() {
-        return null;
+        System.out.println("=> 중요도(1,2,3) : ");
+        int level = s.nextInt();
+        s.nextLine();
+        System.out.println("=> 카테고리(1_학업 2_약속 3_개인) : ");
+        int category = s.nextInt();
+        s.nextLine();
+        System.out.println("=> 작성 날짜(YYYY-MM-DD) : ");
+        String created_date = s.nextLine();
+        System.out.println("=> 일정 내용 : ");
+        String contents = s.nextLine();
+        return new Plan(0, level, category, 0, created_date, contents) ;
+    }
+
+    public void addPlan() {
+        Plan one = (Plan) add();
+        plans.add(one);
+        System.out.println("새 일정이 리스트에 추가되었습니다.");
     }
 
     @Override
