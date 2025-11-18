@@ -80,15 +80,15 @@ public class Plan {
         } else if (category==3) {
             scategory = "개인";
         }
-        if(finish==0) {
-            sfinish = "--";
-        } else if (finish==1) {
+        if (finish==1) {
             sfinish = "O";
         } else if (finish==2) {
             sfinish = "X";
+        } else {
+            sfinish = "--";
         }
 
-        String str = String.format("%-4s", slevel) + String.format("%-6s", scategory) + String.format("%-6s", sfinish) + String.format("%10s", created_date) + "  |  " + contents;
+            String str = String.format("%-4s", slevel) + String.format("%-6s", scategory) + String.format("%-6s", sfinish) + String.format("%10s", created_date) + "  |  " + contents;
         return str;
     }
 }
