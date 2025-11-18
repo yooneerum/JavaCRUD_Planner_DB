@@ -94,4 +94,24 @@ public class PlanCRUD implements ICRUD{
         }
         System.out.println("---------------------------");
     }
+
+    public void listSearchPlan() {
+        System.out.println("=> 찾고 싶은 내용 : ");
+        String keyword = s.next();
+        s.nextLine();
+        ArrayList<Plan> temp = new ArrayList<>();
+
+        for (int i = 0; i < plans.size(); i++) {
+            String contents = plans.get(i).getContents();
+            if (contents.contains(keyword)) {
+                temp.add(plans.get(i));
+            }
+        }
+        System.out.println("---------------------------");
+        for (int i = 0; i < temp.size(); i++) {
+            System.out.print((i + 1) + " ");
+            System.out.println(temp.get(i).toString());
+        }
+        System.out.println("---------------------------");
+    }
 }
