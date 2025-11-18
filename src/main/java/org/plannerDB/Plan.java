@@ -91,4 +91,8 @@ public class Plan {
             String str = String.format("%-4s", slevel) + String.format("%-6s", scategory) + String.format("%-6s", sfinish) + String.format("%10s", created_date) + "  |  " + contents;
         return str;
     }
+
+    public String toFileString() {
+        return this.level + "|" + this.category + "|" + finish + "|" + created_date + "|" + contents;
+    }
 }

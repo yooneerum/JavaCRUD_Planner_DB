@@ -46,6 +46,7 @@ public class PlanManager {
             } else if (menu == 7) {
                 planCRUD.deletePlan();
             } else if (menu == 8) {
+                planCRUD.saveFile();
             }
         }
     }
