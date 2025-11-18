@@ -38,6 +38,7 @@ public class PlanManager {
             } else if (menu == 3) {
                 planCRUD.listCategoryPlan();
             } else if (menu == 4) {
+                planCRUD.listSearchPlan();
             } else if (menu == 5) {
                 planCRUD.addPlan();
             } else if (menu == 6) {
