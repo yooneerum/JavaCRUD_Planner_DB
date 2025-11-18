@@ -3,6 +3,7 @@ package org.plannerDB;
 public class PlanCRUD implements ICRUD{
     @Override
     public Object add() {
+        return null;
     }
 
     @Override
