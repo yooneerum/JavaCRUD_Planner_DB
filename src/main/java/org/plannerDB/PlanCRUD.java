@@ -1,11 +1,15 @@
 package org.plannerDB;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class PlanCRUD implements ICRUD{
     ArrayList<Plan> plans;
     Scanner s;
+    final String fname = "Planner.txt";
 
     PlanCRUD(Scanner s) {
         plans = new ArrayList<>();
@@ -179,5 +183,18 @@ public class PlanCRUD implements ICRUD{
             System.out.println(temp.get(i).toString());
         }
         System.out.println("---------------------------");
+    }
+
+    public void saveFile() {
+        try {
+            PrintWriter pr = new PrintWriter(new FileWriter(fname));
+            for(Plan one : plans){
+                pr.write(one.toFileString() + "\n");
+            }
+            pr.close();
+            System.out.println("!! 데이터 저장 완료 !!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
