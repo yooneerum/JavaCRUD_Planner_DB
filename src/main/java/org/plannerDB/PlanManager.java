@@ -32,6 +32,7 @@ public class PlanManager {
             int menu = selectMenu();
             if (menu == 0) break;
             else if (menu == 1) {
+                planCRUD.listAll();
             } else if (menu == 2) {
             } else if (menu == 3) {
             } else if (menu == 4) {

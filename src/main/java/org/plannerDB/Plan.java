@@ -65,4 +65,30 @@ public class Plan {
     public void setContents(String contents) {
         this.contents = contents;
     }
+
+
+    @Override
+    public String toString() {
+        String slevel = "";
+        String scategory = "";
+        String sfinish = "";
+        for(int i=0;i<level;i++) slevel += "*";
+        if(category==1) {
+            scategory = "학업";
+        } else if (category==2) {
+            scategory = "약속";
+        } else if (category==3) {
+            scategory = "개인";
+        }
+        if(finish==0) {
+            sfinish = "--";
+        } else if (finish==1) {
+            sfinish = "O";
+        } else if (finish==2) {
+            sfinish = "X";
+        }
+
+        String str = String.format("%-3s", slevel) + String.format("%-6s", scategory) + String.format("%-6s", sfinish) + String.format("%10s", created_date) + "  |  " + contents;
+        return str;
+    }
 }
