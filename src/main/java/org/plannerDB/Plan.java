@@ -88,7 +88,7 @@ public class Plan {
             sfinish = "X";
         }
 
-        String str = String.format("%-3s", slevel) + String.format("%-6s", scategory) + String.format("%-6s", sfinish) + String.format("%10s", created_date) + "  |  " + contents;
+        String str = String.format("%-4s", slevel) + String.format("%-6s", scategory) + String.format("%-6s", sfinish) + String.format("%10s", created_date) + "  |  " + contents;
         return str;
     }
 }
