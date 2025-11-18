@@ -76,4 +76,22 @@ public class PlanCRUD implements ICRUD{
         System.out.println("---------------------------");
     }
 
+    public void listCategoryPlan() {
+        System.out.println("=> 카테고리(1_학업 2_약속 3_개인) 입력 : ");
+        int category = s.nextInt();
+        s.nextLine();
+
+        ArrayList<Plan> temp = new ArrayList<>();
+        for (int i = 0; i < plans.size(); i++) {
+            if (plans.get(i).getCategory() == category) {
+                temp.add(plans.get(i));
+            }
+        }
+        System.out.println("---------------------------");
+        for (int i = 0; i < temp.size(); i++) {
+            System.out.print((i + 1) + " ");
+            System.out.println(temp.get(i).toString());
+        }
+        System.out.println("---------------------------");
+    }
 }
