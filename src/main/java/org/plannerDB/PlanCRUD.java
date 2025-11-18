@@ -47,4 +47,13 @@ public class PlanCRUD implements ICRUD{
     public void selectOne(int id) {
 
     }
+
+    public void listAll() {
+        System.out.println("---------------------------");
+        for (int i = 0; i < plans.size(); i++) {
+            System.out.print((i + 1) + " ");
+            System.out.println(plans.get(i).toString());
+        }
+        System.out.println("---------------------------");
+    }
 }
