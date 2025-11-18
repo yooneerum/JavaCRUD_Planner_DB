@@ -34,8 +34,34 @@ public class PlanCRUD implements ICRUD{
     }
 
     @Override
-    public int updatePlan(Object obj) {
-        return 0;
+    public void updatePlan() {
+        System.out.println("=> 수정하고 싶은 일정 내용 검색 : ");
+        String keyword = s.next();
+        s.nextLine();
+        ArrayList<Integer> idlist = this.listAll(keyword);
+        System.out.println("=> 수정할 항목 번호 : ");
+        int id = s.nextInt();
+        s.nextLine();
+        System.out.println("=> 중요도(1,2,3) : ");
+        int level = s.nextInt();
+        s.nextLine();
+        System.out.println("=> 카테고리(1_학업 2_약속 3_개인) : ");
+        int category = s.nextInt();
+        s.nextLine();
+        System.out.println("=> 완료여부(1_완료 2_실패) : ");
+        int finish = s.nextInt();
+        s.nextLine();
+        System.out.println("=> 작성 날짜(YYYY-MM-DD) : ");
+        String created_date = s.nextLine();
+        System.out.println("=> 일정 내용 : ");
+        String contents = s.nextLine();
+        Plan plan = plans.get(idlist.get(id-1));
+        plan.setLevel(level);
+        plan.setCategory(category);
+        plan.setFinish(finish);
+        plan.setCreated_date(created_date);
+        plan.setContents(contents);
+        System.out.println("!! 수정 완료 !!");
     }
 
     @Override
@@ -55,6 +81,22 @@ public class PlanCRUD implements ICRUD{
             System.out.println(plans.get(i).toString());
         }
         System.out.println("---------------------------");
+    }
+    public ArrayList<Integer> listAll(String keyword) {
+        ArrayList<Integer> idlist = new ArrayList<>();
+        int j = 0;
+        System.out.println("---------------------------");
+        for(int i=0; i<plans.size();i++){
+            String contents = plans.get(i).getContents();
+            if(contents.contains(keyword)){
+                System.out.print((j+1) +" ");
+                System.out.println(plans.get(i).toString());
+                idlist.add(i);
+                j++;
+            }
+        }
+        System.out.println("---------------------------");
+        return idlist;
     }
 
     public void listLevelPlan() {
