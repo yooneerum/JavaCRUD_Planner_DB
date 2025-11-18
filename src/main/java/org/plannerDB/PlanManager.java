@@ -1,5 +1,28 @@
 package org.plannerDB;
 
+import java.util.Scanner;
+
 public class PlanManager {
-    public void start() {}
+    Scanner s = new Scanner(System.in);
+
+    public int selectMenu() {
+        System.out.print(
+                "***** My TodoList *****\n"
+                        + "1. 모든 할일\n"
+                        + "2. 중요도별 할일\n"
+                        + "3. 카테고리별 할일\n"
+                        + "4. 할일 검색\n"
+                        + "5. 새로운 일정 등록\n"
+                        + "6. 일정 수정\n"
+                        + "7. 일정 삭제\n"
+                        + "8. 파일에 저장\n"
+                        + "0. 나가기\n"
+                        + "***********************\n"
+                        + "=>원하는 메뉴는?");
+
+        return s.nextInt();
+    }
+    public void start() {
+        selectMenu();
+    }
 }
