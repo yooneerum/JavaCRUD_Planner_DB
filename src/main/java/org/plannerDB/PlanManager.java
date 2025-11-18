@@ -4,6 +4,10 @@ import java.util.Scanner;
 
 public class PlanManager {
     Scanner s = new Scanner(System.in);
+    PlanCRUD planCRUD;
+    PlanManager() {
+        planCRUD = new PlanCRUD(s);
+    }
 
     public int selectMenu() {
         System.out.print(
@@ -26,13 +30,13 @@ public class PlanManager {
     public void start() {
         while (true) {
             int menu = selectMenu();
-            if (menu == 0)
-                break;
+            if (menu == 0) break;
             else if (menu == 1) {
             } else if (menu == 2) {
             } else if (menu == 3) {
             } else if (menu == 4) {
             } else if (menu == 5) {
+                planCRUD.addPlan();
             } else if (menu == 6) {
             } else if (menu == 7) {
             } else if (menu == 8) {
