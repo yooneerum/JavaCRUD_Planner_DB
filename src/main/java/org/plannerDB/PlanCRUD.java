@@ -14,6 +14,7 @@ public class PlanCRUD implements ICRUD{
     final String selectAll = "select * from Planner";
     final String PLAN_INSERT = "insert into Planner (level, category, finish, created_date, contents) values(?,?,?,?,?)";
     final String PLAN_UPDATE = "update Planner set level=?, category=?, finish=?, created_date=?, contents=? where id=?";
+    final String PLAN_DELETE = "delete from Planner where id=?";
 
     ArrayList<Plan> plans;
     Scanner s;
@@ -84,6 +85,7 @@ public class PlanCRUD implements ICRUD{
         int retval = add(one);
         if (retval > 0) {
             System.out.println("새 일정이 리스트에 추가되었습니다.");
+            loadDBData();
         } else{
             System.out.println("!! 일정 추가 중 오류 발생 !!");
         }
@@ -149,13 +151,32 @@ public class PlanCRUD implements ICRUD{
 
         if (retval > 0) {
             System.out.println("일정이 수정되었습니다.");
+            loadDBData();
         } else{
             System.out.println("!! 일정 수정 중 오류 발생 !!");
         }
     }
 
     @Override
-    public void deletePlan() {
+    public int delete(Plan one) throws SQLException {
+        int result = 0;
+
+        System.out.println("=> 정말 삭제하시겠습니까?(Y/n) ");
+        String ans = s.next();
+        if(ans.equalsIgnoreCase("Y")) {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(PLAN_DELETE);
+            pstmt.setInt(1 ,one.getId());
+            result = pstmt.executeUpdate();
+            pstmt.close();
+        } else {
+            System.out.println("취소되었습니다.");
+            result = -1;
+        }
+        return result;
+    }
+
+    public void deletePlan() throws SQLException {
         System.out.println("=> 삭제하고 싶은 내용 검색 : ");
         String keyword = s.next();
         s.nextLine();
@@ -164,28 +185,35 @@ public class PlanCRUD implements ICRUD{
             System.out.println("=> 삭제할 항목 번호 : ");
             int id = s.nextInt();
             s.nextLine();
-            while (id > idlist.size()) {
-                System.out.println("존재하지 않는 항목입니다.");
-                System.out.println("=> 삭제할 항목 번호 재입력 : ");
-                id = s.nextInt();
-                s.nextLine();
+
+            int selectedDBId = idlist.get(id - 1);
+
+            Plan plan = null;
+            int removeIndex = -1;
+
+            for (int i = 0; i < plans.size(); i++) {
+                if (plans.get(i).getId() == selectedDBId) {
+                    plan = plans.get(i);
+                    removeIndex = i;
+                    break;
+                }
             }
-            System.out.println("=> 정말 삭제하시겠습니까?(Y/n) ");
-            String ans = s.next();
-            if(ans.equalsIgnoreCase("Y")) {
-                plans.remove((int)idlist.get(id-1));
+            if (plan == null) {
+                System.out.println("!! 해당하는 일정이 없습니다 !!");
+                return;
+            }
+
+            int retval = delete(plan);
+
+            if (retval > 0) {
                 System.out.println("일정이 삭제되었습니다.");
-            } else {
-                System.out.println("취소되었습니다.");
+                loadDBData();
+            } else if (retval != -1) {
+                System.out.println("!! 일정 삭제 중 오류 발생 !!");
             }
         }else {
             System.out.println("검색 결과가 없습니다.");
         }
-    }
-
-    @Override
-    public void selectOne(int id) {
-
     }
 
     public void listAll() {
