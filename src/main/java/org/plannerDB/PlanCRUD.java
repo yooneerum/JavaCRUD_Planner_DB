@@ -3,6 +3,10 @@ package org.plannerDB;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,10 +14,35 @@ public class PlanCRUD implements ICRUD{
     ArrayList<Plan> plans;
     Scanner s;
     final String fname = "Planner.txt";
+    Connection conn;
 
     PlanCRUD(Scanner s) {
         plans = new ArrayList<>();
         this.s = s;
+        conn = DBConnection.getConnection();
+    }
+
+    public void loadDBData() {
+        plans.clear();
+
+        String selectall = "select * from Planner";
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(selectall);
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int level = rs.getInt("level");
+                int category = rs.getInt("category");
+                int finish = rs.getInt("finish");
+                String created_date = rs.getString("created_date");
+                String contents = rs.getString("contents");
+                plans.add(new Plan(id, level, category, finish, created_date, contents));
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -103,6 +132,7 @@ public class PlanCRUD implements ICRUD{
     }
 
     public void listAll() {
+        loadDBData();
         System.out.println("---------------------------");
         for (int i = 0; i < plans.size(); i++) {
             System.out.print((i + 1) + " ");
