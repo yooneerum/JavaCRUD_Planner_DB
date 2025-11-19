@@ -3,14 +3,17 @@ package org.plannerDB;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class PlanCRUD implements ICRUD{
+
+    final String selectAll = "select * from Planner";
+    final String PLAN_INSERT = "insert into Planner (level, category, finish, created_date, contents) values(?,?,?,?,?)";
+
     ArrayList<Plan> plans;
     Scanner s;
     final String fname = "Planner.txt";
@@ -25,10 +28,9 @@ public class PlanCRUD implements ICRUD{
     public void loadDBData() {
         plans.clear();
 
-        String selectall = "select * from Planner";
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(selectall);
+            ResultSet rs = stmt.executeQuery(selectAll);
             while (rs.next()) {
                 int id = rs.getInt("id");
                 int level = rs.getInt("level");
@@ -45,8 +47,28 @@ public class PlanCRUD implements ICRUD{
         }
     }
 
+    public String getCurrentDate() {
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return f.format(now);
+    }
+
     @Override
-    public Object add() {
+    public int add(Plan one) throws SQLException {
+        int result = 0;
+        PreparedStatement pstmt;
+        pstmt = conn.prepareStatement(PLAN_INSERT);
+        pstmt.setInt(1 ,one.getLevel());
+        pstmt.setInt(2 ,one.getCategory());
+        pstmt.setInt(3 ,0);
+        pstmt.setString(4 ,getCurrentDate());
+        pstmt.setString(5 ,one.getContents());
+        result = pstmt.executeUpdate();
+        pstmt.close();
+        return result;
+    }
+
+    public void addPlan() throws SQLException {
         System.out.println("=> 중요도(1,2,3) : ");
         int level = s.nextInt();
         s.nextLine();
@@ -57,13 +79,14 @@ public class PlanCRUD implements ICRUD{
         String created_date = s.nextLine();
         System.out.println("=> 일정 내용 : ");
         String contents = s.nextLine();
-        return new Plan(0, level, category, 0, created_date, contents) ;
-    }
 
-    public void addPlan() {
-        Plan one = (Plan) add();
-        plans.add(one);
-        System.out.println("새 일정이 리스트에 추가되었습니다.");
+        Plan one = new Plan(0, level, category, 0, created_date, contents);
+        int retval = add(one);
+        if (retval > 0) {
+            System.out.println("새 일정이 리스트에 추가되었습니다.");
+        } else{
+            System.out.println("!! 일정 추가 중 오류 발생 !!");
+        }
     }
 
     @Override
