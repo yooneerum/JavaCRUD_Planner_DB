@@ -29,6 +29,7 @@ public class PlanManager {
     }
 
     public void start() throws SQLException {
+        planCRUD.loadDBData();
         while (true) {
             int menu = selectMenu();
             if (menu == 0) break;
