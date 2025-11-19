@@ -13,6 +13,7 @@ public class PlanCRUD implements ICRUD{
 
     final String selectAll = "select * from Planner";
     final String PLAN_INSERT = "insert into Planner (level, category, finish, created_date, contents) values(?,?,?,?,?)";
+    final String PLAN_UPDATE = "update Planner set level=?, category=?, finish=?, created_date=?, contents=? where id=?";
 
     ArrayList<Plan> plans;
     Scanner s;
@@ -89,7 +90,22 @@ public class PlanCRUD implements ICRUD{
     }
 
     @Override
-    public void updatePlan() {
+    public int update(Plan one) throws SQLException {
+        int result = 0;
+        PreparedStatement pstmt;
+        pstmt = conn.prepareStatement(PLAN_UPDATE);
+        pstmt.setInt(1 ,one.getLevel());
+        pstmt.setInt(2 ,one.getCategory());
+        pstmt.setInt(3 ,one.getFinish());
+        pstmt.setString(4 , one.getCreated_date());
+        pstmt.setString(5 ,one.getContents());
+        pstmt.setInt(6 ,one.getId());
+        result = pstmt.executeUpdate();
+        pstmt.close();
+        return result;
+    }
+
+    public void updatePlan() throws SQLException {
         System.out.println("=> 수정하고 싶은 일정 내용 검색 : ");
         String keyword = s.next();
         s.nextLine();
@@ -106,17 +122,36 @@ public class PlanCRUD implements ICRUD{
         System.out.println("=> 완료여부(1_완료 2_실패) : ");
         int finish = s.nextInt();
         s.nextLine();
-        System.out.println("=> 작성 날짜(YYYY-MM-DD) : ");
-        String created_date = s.nextLine();
+        String created_date = getCurrentDate();
         System.out.println("=> 일정 내용 : ");
         String contents = s.nextLine();
-        Plan plan = plans.get(idlist.get(id-1));
+
+        int selectedDBId = idlist.get(id - 1);
+        Plan plan = null;
+        for (Plan p : plans) {
+            if (p.getId() == selectedDBId) {
+                plan = p;
+                break;
+            }
+        }
+        if (plan == null) {
+            System.out.println("!! 해당하는 일정이 없습니다 !!");
+            return;
+        }
+
         plan.setLevel(level);
         plan.setCategory(category);
         plan.setFinish(finish);
         plan.setCreated_date(created_date);
         plan.setContents(contents);
-        System.out.println("!! 수정 완료 !!");
+
+        int retval = update(plan);
+
+        if (retval > 0) {
+            System.out.println("일정이 수정되었습니다.");
+        } else{
+            System.out.println("!! 일정 수정 중 오류 발생 !!");
+        }
     }
 
     @Override
@@ -171,7 +206,7 @@ public class PlanCRUD implements ICRUD{
             if(contents.contains(keyword)){
                 System.out.print((j+1) +" ");
                 System.out.println(plans.get(i).toString());
-                idlist.add(i);
+                idlist.add(plans.get(i).getId());
                 j++;
             }
         }
