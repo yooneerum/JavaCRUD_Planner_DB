@@ -1,5 +1,6 @@
 package org.plannerDB;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class PlanManager {
@@ -27,7 +28,7 @@ public class PlanManager {
         return s.nextInt();
     }
 
-    public void start() {
+    public void start() throws SQLException {
         while (true) {
             int menu = selectMenu();
             if (menu == 0) break;
