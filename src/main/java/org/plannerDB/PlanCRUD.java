@@ -61,7 +61,7 @@ public class PlanCRUD implements ICRUD{
         pstmt.setInt(1 ,one.getLevel());
         pstmt.setInt(2 ,one.getCategory());
         pstmt.setInt(3 ,0);
-        pstmt.setString(4 ,getCurrentDate());
+        pstmt.setString(4 , one.getCreated_date());
         pstmt.setString(5 ,one.getContents());
         result = pstmt.executeUpdate();
         pstmt.close();
@@ -75,8 +75,7 @@ public class PlanCRUD implements ICRUD{
         System.out.println("=> 카테고리(1_학업 2_약속 3_개인) : ");
         int category = s.nextInt();
         s.nextLine();
-        System.out.println("=> 작성 날짜(YYYY-MM-DD) : ");
-        String created_date = s.nextLine();
+        String created_date = getCurrentDate();
         System.out.println("=> 일정 내용 : ");
         String contents = s.nextLine();
 
